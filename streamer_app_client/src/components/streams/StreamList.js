@@ -13,7 +13,12 @@ class StreamList extends React.Component {
       console.log("found admin");
       return (
         <div>
-          <button class="ui inverted red button">Delete</button>
+          <Link
+            to={`/stream/delete/${stream.id}`}
+            class="ui inverted red button"
+          >
+            Delete
+          </Link>
           <Link
             to={`/stream/edit/${stream.id}`}
             class="ui inverted violet button"
@@ -36,12 +41,17 @@ class StreamList extends React.Component {
     }
   }
   renderStreamList() {
+    if (!this.props.streams) {
+      return <div className="ui active centered inline loader"></div>;
+    }
     return this.props.streams.map((stream) => {
       return (
         <div className="item">
           <i class="tv icon ui avatar image"></i>
           <div className="content">
-            <div className="header">{stream.title}</div>
+            <Link to={`/stream/${stream.id}`}>
+              <div className="header">{stream.title}</div>
+            </Link>
             <div className="description">{stream.description}</div>
             {this.renderOwner(stream)}
           </div>
@@ -51,7 +61,9 @@ class StreamList extends React.Component {
   }
   render() {
     console.log(this.props.streams);
-
+    if (this.props.streams.length === 0) {
+      return <div className="ui active centered inline loader"></div>;
+    }
     return (
       <div>
         <h2>Streams</h2>
